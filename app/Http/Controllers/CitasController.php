@@ -41,10 +41,52 @@ class CitasController extends Controller
 
    //Modificar Cita
     public function actualizarCita(Request $request){
-        return $request;
-        $update_cita = DB::table('citas_listado')
-        ->where('idcita', $request['idcita'])
-        ->update(['fecha'=>$request['fecha'], 'hora' =>$request['hora'], 'ido' => $request['IDOdontologo']]);
-        return $update_cita; 
-    }     
+
+        /*
+        {
+        "idcita": 3,
+        "nombreOdontologo": "Juan Diego",
+        "nombrePaciente": "Luisa Sierra",
+        "fecha": "2019-06-01",
+        "hora": "12:00:00",
+        "ido": 1,
+        "idp": 1,
+        "IDOdontologo": "2",
+        "Fecha": "2019-06-20",
+        "Hora": "17:00"
+        }
+         */
+
+         $i = 0;
+
+        //  return "Objeto:".$request['Fecha']." ".$request['Hora']." ".$request['IDOdontologo'];
+
+        if(isset($request['Fecha']) && $request['Fecha'] != '' ){
+            $update_cita = DB::table('citas_listado')
+            ->where('idcita', $request['idcita'])
+            ->update(['fecha'=>$request['Fecha']]);
+            $i ++;
+        }
+        if(isset($request['Hora']) && $request['Hora'] != ''){
+            $update_cita = DB::table('citas_listado')
+            ->where('idcita', $request['idcita'])
+            ->update(['hora' =>$request['Hora']]);
+            $i ++;
+
+        }
+        if(isset($request['IDOdontologo']) && $request['IDOdontologo'] != ''){
+            $update_cita = DB::table('citas_listado')
+            ->where('idcita', $request['idcita'])
+            ->update(['ido' => $request['IDOdontologo']]);
+            $i ++;
+
+        } 
+
+        return "'".$i."'"; 
+    }  
+    
+    public function eliminarCita(Request $request){
+        $deleted = DB::delete('delete from _cita where idcita = '.$request[0].';' );
+        return $deleted;
+    }
 }
